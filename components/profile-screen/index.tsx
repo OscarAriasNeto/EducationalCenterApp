@@ -81,25 +81,33 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       {/* Tab bar – aqui Perfil fica ativo */}
-      <View style={styles.tabBar}>
+        <View style={styles.tabBar}>
         <TouchableOpacity
-          style={styles.tabItem}
-          onPress={() => navigation.navigate("Home")}
+            style={styles.tabItem}
+            onPress={() => navigation.navigate("Home")}
         >
-          <Text style={styles.tabIcon}>⌂</Text>
-          <Text style={styles.tabLabel}>Início</Text>
+            <Text style={styles.tabIcon}>⌂</Text>
+            <Text style={styles.tabLabel}>Início</Text>
         </TouchableOpacity>
 
-        <View style={styles.tabItem}>
-          <Text style={styles.tabIcon}>👥</Text>
-          <Text style={styles.tabLabel}>Grupos</Text>
+        <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate("Group")}
+        >
+            <Text style={styles.tabIcon}>👥</Text>
+            <Text style={styles.tabLabel}>Grupos</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate("Profile")}
+        >
+            <Text style={[styles.tabIcon, styles.tabIconActive]}>👤</Text>
+            <Text style={[styles.tabLabel, styles.tabLabelActive]}>Perfil</Text>
+        </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={[styles.tabIcon, styles.tabIconActive]}>👤</Text>
-          <Text style={[styles.tabLabel, styles.tabLabelActive]}>Perfil</Text>
-        </TouchableOpacity>
-      </View>
+
     </SafeAreaView>
   );
 };

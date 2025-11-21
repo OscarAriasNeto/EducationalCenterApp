@@ -67,10 +67,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={[styles.tabLabel, styles.tabLabelActive]}>Início</Text>
         </TouchableOpacity>
 
-        <View style={styles.tabItem}>
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate("Group")}
+        >
           <Text style={styles.tabIcon}>👥</Text>
           <Text style={styles.tabLabel}>Grupos</Text>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.tabItem}
