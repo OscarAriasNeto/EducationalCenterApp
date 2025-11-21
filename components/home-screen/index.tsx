@@ -11,9 +11,11 @@ import {
 const PRIMARY = "#6C3FF0";
 const TAB_ICON_COLOR = "#7C7C8A";
 
-// tipagem bem simples pra não dar erro
+// tipagem simples
 type Props = {
-  navigation: { navigate: (screen: string) => void };
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
@@ -24,9 +26,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.container}>
         {/* Cabeçalho */}
         <View style={styles.header}>
-            <View style={styles.logoCircle}>
+          <View style={styles.logoCircle}>
             <View style={styles.logoInnerCircle} />
-            </View>
+          </View>
 
           <View>
             <Text style={styles.appTitleMain}>Educational</Text>
@@ -48,29 +50,35 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             style={styles.primaryButton}
             activeOpacity={0.8}
-            onPress={() => navigation.navigate("Tracks")} // <<< AQUI NAVEGA
+            onPress={() => navigation.navigate("Tracks")}
           >
             <Text style={styles.buttonText}>Explorar Trilhas</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Tab bar fake */}
+      {/* Tab bar */}
       <View style={styles.tabBar}>
-        <View style={styles.tabItem}>
+        <TouchableOpacity
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Home")}
+        >
           <Text style={[styles.tabIcon, styles.tabIconActive]}>⌂</Text>
           <Text style={[styles.tabLabel, styles.tabLabelActive]}>Início</Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.tabItem}>
           <Text style={styles.tabIcon}>👥</Text>
           <Text style={styles.tabLabel}>Grupos</Text>
         </View>
 
-        <View style={styles.tabItem}>
+        <TouchableOpacity
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Profile")} // << aqui chama o perfil
+        >
           <Text style={styles.tabIcon}>👤</Text>
           <Text style={styles.tabLabel}>Perfil</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -78,6 +86,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
 export default HomeScreen;
 
+/* estilos iguais aos que você já tinha */
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: "#FFF" },
   container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
