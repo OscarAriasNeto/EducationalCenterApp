@@ -6,10 +6,10 @@ import {
   StyleSheet,
   StatusBar,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 
 const PRIMARY = "#6C3FF0";
-const TAB_ICON_COLOR = "#7C7C8A";
 
 const tracks = [
   {
@@ -41,12 +41,25 @@ const tracks = [
   },
 ];
 
-const TracksScreen: React.FC = () => {
+type Props = {
+  navigation: {
+    goBack: () => void;
+  };
+};
+
+const TracksScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.container}>
+        {/* linha do voltar */}
+        <View style={styles.backRow}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.backIcon}>‹</Text>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.heading}>
           Trilhas{"\n"}Preparatórias
         </Text>
@@ -77,24 +90,6 @@ const TracksScreen: React.FC = () => {
           ))}
         </ScrollView>
       </View>
-
-      {/* Tab bar fake */}
-      <View style={styles.tabBar}>
-        <View style={styles.tabItem}>
-          <Text style={[styles.tabIcon, styles.tabIconActive]}>⌂</Text>
-          <Text style={[styles.tabLabel, styles.tabLabelActive]}>Início</Text>
-        </View>
-
-        <View style={styles.tabItem}>
-          <Text style={styles.tabIcon}>👥</Text>
-          <Text style={styles.tabLabel}>Grupos</Text>
-        </View>
-
-        <View style={styles.tabItem}>
-          <Text style={styles.tabIcon}>👤</Text>
-          <Text style={styles.tabLabel}>Perfil</Text>
-        </View>
-      </View>
     </SafeAreaView>
   );
 };
@@ -102,10 +97,30 @@ const TracksScreen: React.FC = () => {
 export default TracksScreen;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#FFF" },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
-  heading: { fontSize: 26, fontWeight: "700", marginBottom: 24 },
-  list: { flex: 1 },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+  },
+  backRow: {
+    marginTop: 4,
+    marginBottom: 8,
+  },
+  backIcon: {
+    fontSize: 24,
+  },
+  heading: {
+    fontSize: 26,
+    fontWeight: "700",
+    marginBottom: 24,
+  },
+  list: {
+    flex: 1,
+  },
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
@@ -117,8 +132,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
-  cardTitle: { fontSize: 16, fontWeight: "600", marginBottom: 4 },
-  cardDescription: { fontSize: 13, color: "#555", marginBottom: 12 },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  cardDescription: {
+    fontSize: 13,
+    color: "#555",
+    marginBottom: 12,
+  },
   progressBackground: {
     height: 6,
     borderRadius: 3,
@@ -126,19 +149,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 4,
   },
-  progressFill: { height: "100%", backgroundColor: PRIMARY },
-  modulesText: { fontSize: 12, color: "#777" },
-  tabBar: {
-    flexDirection: "row",
-    borderTopWidth: 0.5,
-    borderTopColor: "#E4E4E7",
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    backgroundColor: "#FFFFFF",
+  progressFill: {
+    height: "100%",
+    backgroundColor: PRIMARY,
   },
-  tabItem: { flex: 1, alignItems: "center" },
-  tabIcon: { fontSize: 18, color: TAB_ICON_COLOR, marginBottom: 2 },
-  tabLabel: { fontSize: 12, color: TAB_ICON_COLOR },
-  tabIconActive: { color: PRIMARY },
-  tabLabelActive: { color: PRIMARY, fontWeight: "600" },
+  modulesText: {
+    fontSize: 12,
+    color: "#777",
+  },
 });

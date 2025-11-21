@@ -11,14 +11,12 @@ import {
 const PRIMARY = "#6C3FF0";
 const TAB_ICON_COLOR = "#7C7C8A";
 
-// por enquanto o "cargo" do perfil é fixo;
-// depois você pode receber isso via contexto ou params
+// por enquanto o "cargo" do perfil:
 const USER_ROLE = "Jovem Aprendiz";
 
 type Props = {
   navigation: {
     navigate: (screen: string) => void;
-    goBack: () => void;
   };
 };
 
@@ -30,26 +28,16 @@ const GroupScreen: React.FC<Props> = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.container}>
-        {/* linha do voltar */}
-        <View style={styles.backRow}>
-          <TouchableOpacity onPress={navigation.goBack}>
-            <Text style={styles.backIcon}>‹</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* título + descrição */}
         <Text style={styles.heading}>{groupTitle}</Text>
 
         <Text style={styles.subtitle}>
           Troque experiências e dicas{"\n"}sobre aprendizagem
         </Text>
 
-        {/* botão entrar no grupo */}
         <TouchableOpacity style={styles.primaryButton} activeOpacity={0.8}>
           <Text style={styles.buttonText}>Entrar no Grupo</Text>
         </TouchableOpacity>
 
-        {/* Publicações */}
         <Text style={styles.sectionTitle}>Publicações</Text>
 
         <View style={styles.postCard}>
@@ -70,7 +58,7 @@ const GroupScreen: React.FC<Props> = ({ navigation }) => {
         </View>
       </View>
 
-      {/* tab bar – aqui deixo Grupos ativo */}
+      {/* Tab bar – Grupos ativo */}
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={styles.tabItem}
@@ -104,14 +92,8 @@ export default GroupScreen;
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: "#FFF" },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
-  backRow: {
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  backIcon: {
-    fontSize: 24,
-  },
+  container: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
+
   heading: {
     fontSize: 26,
     fontWeight: "700",
@@ -135,6 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
@@ -176,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
   },
+
   tabBar: {
     flexDirection: "row",
     borderTopWidth: 0.5,

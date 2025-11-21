@@ -15,7 +15,6 @@ const TAB_ICON_COLOR = "#7C7C8A";
 type Props = {
   navigation: {
     navigate: (screen: string) => void;
-    goBack: () => void;
   };
 };
 
@@ -25,13 +24,6 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.container}>
-        {/* Linha do botão voltar */}
-        <View style={styles.backRow}>
-          <TouchableOpacity onPress={navigation.goBack}>
-            <Text style={styles.backIcon}>‹</Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Cabeçalho do perfil */}
         <View style={styles.profileRow}>
           <View style={styles.avatar}>
@@ -71,7 +63,9 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.trackButton}>
-            <Text style={styles.trackText}>Introdução ao Mundo Corporativo</Text>
+            <Text style={styles.trackText}>
+              Introdução ao Mundo Corporativo
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.trackButton}>
@@ -80,34 +74,32 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
         </ScrollView>
       </View>
 
-      {/* Tab bar – aqui Perfil fica ativo */}
-        <View style={styles.tabBar}>
+      {/* Tab bar – Perfil ativo */}
+      <View style={styles.tabBar}>
         <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("Home")}
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Home")}
         >
-            <Text style={styles.tabIcon}>⌂</Text>
-            <Text style={styles.tabLabel}>Início</Text>
+          <Text style={styles.tabIcon}>⌂</Text>
+          <Text style={styles.tabLabel}>Início</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("Group")}
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Group")}
         >
-            <Text style={styles.tabIcon}>👥</Text>
-            <Text style={styles.tabLabel}>Grupos</Text>
+          <Text style={styles.tabIcon}>👥</Text>
+          <Text style={styles.tabLabel}>Grupos</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("Profile")}
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Profile")}
         >
-            <Text style={[styles.tabIcon, styles.tabIconActive]}>👤</Text>
-            <Text style={[styles.tabLabel, styles.tabLabelActive]}>Perfil</Text>
+          <Text style={[styles.tabIcon, styles.tabIconActive]}>👤</Text>
+          <Text style={[styles.tabLabel, styles.tabLabelActive]}>Perfil</Text>
         </TouchableOpacity>
-        </View>
-
-
+      </View>
     </SafeAreaView>
   );
 };
@@ -116,14 +108,8 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: "#FFF" },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
-  backRow: {
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  backIcon: {
-    fontSize: 24,
-  },
+  container: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
+
   profileRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -145,6 +131,7 @@ const styles = StyleSheet.create({
   },
   name: { fontSize: 24, fontWeight: "700" },
   role: { fontSize: 14, color: "#777", marginTop: 2 },
+
   optionRow: {
     paddingVertical: 12,
   },
@@ -158,6 +145,7 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: "#E4E4E7",
   },
+
   sectionTitle: {
     marginTop: 24,
     marginBottom: 12,
@@ -175,6 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "500",
   },
+
   tabBar: {
     flexDirection: "row",
     borderTopWidth: 0.5,
