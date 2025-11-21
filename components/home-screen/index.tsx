@@ -11,10 +11,9 @@ import {
 const PRIMARY = "#6C3FF0";
 const TAB_ICON_COLOR = "#7C7C8A";
 
-// tipagem simples
 type Props = {
   navigation: {
-    navigate: (screen: string) => void;
+    navigate: (screen: string, params?: any) => void;
   };
 };
 
@@ -67,9 +66,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={[styles.tabLabel, styles.tabLabelActive]}>Início</Text>
         </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("Group")}
+        <TouchableOpacity
+          style={styles.tabItem}
+          onPress={() => navigation.navigate("Group")}
         >
           <Text style={styles.tabIcon}>👥</Text>
           <Text style={styles.tabLabel}>Grupos</Text>
@@ -77,7 +76,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.tabItem}
-          onPress={() => navigation.navigate("Profile")} // << aqui chama o perfil
+          onPress={() => navigation.navigate("Profile")}
         >
           <Text style={styles.tabIcon}>👤</Text>
           <Text style={styles.tabLabel}>Perfil</Text>
@@ -89,7 +88,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
 export default HomeScreen;
 
-/* estilos iguais aos que você já tinha */
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: "#FFF" },
   container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },

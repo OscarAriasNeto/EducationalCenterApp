@@ -13,28 +13,28 @@ const PRIMARY = "#6C3FF0";
 
 const tracks = [
   {
-    id: "1",
+    id: "communication",
     title: "Comunicação Profissional",
     description:
       "Comunicação eficaz, postura e competências essenciais no ambiente de trabalho.",
-    done: 2,
+    done: 0,
     total: 5,
-    progress: 2 / 5,
+    progress: 0 / 5,
   },
   {
-    id: "2",
+    id: "corporate",
     title: "Introdução ao Mundo Corporativo",
     description:
       "Entenda como funcionam as empresas, áreas, rotinas e cultura organizacional.",
-    done: 1,
+    done: 0,
     total: 4,
-    progress: 1 / 4,
+    progress: 0 / 4,
   },
   {
-    id: "3",
+    id: "labor-law",
     title: "Noções de Direito Trabalhista",
     description:
-      "Direitos e deveres do jovem aprendiz, contratos e principais conceitos legais.",
+      "Direitos e deveres do jovem aprendiz, contratos e conceitos legais.",
     done: 0,
     total: 6,
     progress: 0 / 6,
@@ -43,6 +43,7 @@ const tracks = [
 
 type Props = {
   navigation: {
+    navigate: (screen: string, params?: any) => void;
     goBack: () => void;
   };
 };
@@ -53,7 +54,7 @@ const TracksScreen: React.FC<Props> = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.container}>
-        {/* linha do voltar */}
+        {/* botão voltar */}
         <View style={styles.backRow}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.backIcon}>‹</Text>
@@ -70,7 +71,12 @@ const TracksScreen: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
         >
           {tracks.map((track) => (
-            <View key={track.id} style={styles.card}>
+            <TouchableOpacity
+              key={track.id}
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("Trail", { trailId: track.id })}
+            >
               <Text style={styles.cardTitle}>{track.title}</Text>
               <Text style={styles.cardDescription}>{track.description}</Text>
 
@@ -86,7 +92,7 @@ const TracksScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.modulesText}>
                 {track.done} de {track.total}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>

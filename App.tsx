@@ -6,12 +6,14 @@ import HomeScreen from "./components/home-screen";
 import TracksScreen from "./components/track-screen";
 import ProfileScreen from "./components/profile-screen";
 import GroupScreen from "./components/group-screen";
+import TrailScreen from "./components/trail-screen";
 
 export type RootStackParamList = {
   Home: undefined;
   Tracks: undefined;
   Profile: undefined;
   Group: undefined;
+  Trail: { trailId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +29,7 @@ export default function App() {
         <Stack.Screen name="Tracks" component={TracksScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Group" component={GroupScreen} />
+        <Stack.Screen name="Trail" component={TrailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
