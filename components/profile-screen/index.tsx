@@ -6,11 +6,10 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
+import { useUser } from "../user-context";
 
 const PRIMARY = "#6C3FF0";
-const TAB_ICON_COLOR = "#7C7C8A";
 
 type Props = {
   navigation: {
@@ -19,63 +18,63 @@ type Props = {
 };
 
 const ProfileScreen: React.FC<Props> = ({ navigation }) => {
+  const { profile } = useUser();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.container}>
-        {/* Cabeçalho do perfil */}
-        <View style={styles.profileRow}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarInitial}>L</Text>
+        {/* Título */}
+        <Text style={styles.headerTitle}>Perfil</Text>
+
+        {/* Card principal do perfil */}
+        <View style={styles.profileCard}>
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarInitials}>
+              {profile.nome ? profile.nome[0].toUpperCase() : "J"}
+            </Text>
           </View>
 
-          <View>
-            <Text style={styles.name}>Lucas</Text>
-            <Text style={styles.role}>Jovem Aprendiz</Text>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>{profile.nome}</Text>
+            <Text style={styles.profileRole}>{profile.cargo}</Text>
+            <Text style={styles.profileEmail}>{profile.email}</Text>
           </View>
+
+          <TouchableOpacity
+            style={styles.editButton}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <Text style={styles.editButtonText}>Editar perfil</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Conteúdo rolável */}
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ paddingBottom: 24 }}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Opções */}
-          <TouchableOpacity style={styles.optionRow}>
-            <Text style={styles.optionText}>Editar Perfil</Text>
-          </TouchableOpacity>
+        {/* Detalhes adicionais */}
+        <View style={styles.detailsCard}>
+          <Text style={styles.detailsTitle}>Sobre você</Text>
 
-          <View style={styles.divider} />
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Idade</Text>
+            <Text style={styles.detailValue}>{profile.idade} anos</Text>
+          </View>
 
-          <TouchableOpacity style={styles.optionRow}>
-            <Text style={[styles.optionText, styles.logoutText]}>Sair</Text>
-          </TouchableOpacity>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Cargo</Text>
+            <Text style={styles.detailValue}>{profile.cargo}</Text>
+          </View>
 
-          <View style={styles.divider} />
-
-          {/* Minhas trilhas */}
-          <Text style={styles.sectionTitle}>Minhas Trilhas</Text>
-
-          <TouchableOpacity style={styles.trackButton}>
-            <Text style={styles.trackText}>Comunicação Profissional</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.trackButton}>
-            <Text style={styles.trackText}>
-              Introdução ao Mundo Corporativo
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.trackButton}>
-            <Text style={styles.trackText}>Noções de Direito Trabalhista</Text>
-          </TouchableOpacity>
-        </ScrollView>
+          <View style={styles.detailRowColumn}>
+            <Text style={styles.detailLabel}>Objetivo</Text>
+            <Text style={styles.detailValue}>{profile.objetivo}</Text>
+          </View>
+        </View>
       </View>
 
-      {/* Tab bar – Perfil ativo */}
+      {/* === BARRA IGUAL À DO HOME, MAS COM PERFIL ATIVO === */}
       <View style={styles.tabBar}>
+        {/* Início (inativo aqui) */}
         <TouchableOpacity
           style={styles.tabItem}
           onPress={() => navigation.navigate("Home")}
@@ -84,6 +83,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.tabLabel}>Início</Text>
         </TouchableOpacity>
 
+        {/* Grupos (inativo aqui) */}
         <TouchableOpacity
           style={styles.tabItem}
           onPress={() => navigation.navigate("Group")}
@@ -92,6 +92,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.tabLabel}>Grupos</Text>
         </TouchableOpacity>
 
+        {/* Perfil (ativo) */}
         <TouchableOpacity
           style={styles.tabItem}
           onPress={() => navigation.navigate("Profile")}
@@ -107,74 +108,136 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#FFF" },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
-
-  profileRow: {
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 16,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginBottom: 16,
+  },
+  profileCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 16,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.07,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "#E5E5EA",
+  avatarCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#E5E7EB",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 16,
+    marginRight: 12,
   },
-  avatarInitial: {
-    fontSize: 28,
-    fontWeight: "600",
-    color: "#777",
+  avatarInitials: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#4B5563",
   },
-  name: { fontSize: 24, fontWeight: "700" },
-  role: { fontSize: 14, color: "#777", marginTop: 2 },
-
-  optionRow: {
-    paddingVertical: 12,
+  profileInfo: {
+    flex: 1,
   },
-  optionText: {
+  profileName: {
     fontSize: 16,
+    fontWeight: "600",
   },
-  logoutText: {
-    color: "#D10F3F",
+  profileRole: {
+    fontSize: 13,
+    color: "#6B7280",
+    marginTop: 2,
   },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#E4E4E7",
+  profileEmail: {
+    fontSize: 12,
+    color: "#9CA3AF",
+    marginTop: 2,
   },
-
-  sectionTitle: {
-    marginTop: 24,
+  editButton: {
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: PRIMARY,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  editButtonText: {
+    fontSize: 12,
+    color: PRIMARY,
+    fontWeight: "600",
+  },
+  detailsCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 1,
+  },
+  detailsTitle: {
+    fontSize: 15,
+    fontWeight: "600",
     marginBottom: 12,
-    fontSize: 16,
-    fontWeight: "600",
   },
-  trackButton: {
-    backgroundColor: "#F5F5F7",
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 8,
   },
-  trackText: {
-    fontSize: 15,
-    fontWeight: "500",
+  detailRowColumn: {
+    marginTop: 4,
+  },
+  detailLabel: {
+    fontSize: 13,
+    color: "#6B7280",
+  },
+  detailValue: {
+    fontSize: 13,
+    color: "#111827",
   },
 
+  /* === TAB BAR (MESMO PADRÃO DO HOME) === */
   tabBar: {
     flexDirection: "row",
-    borderTopWidth: 0.5,
-    borderTopColor: "#E4E4E7",
-    paddingVertical: 8,
-    paddingHorizontal: 24,
+    borderTopWidth: 1,
+    borderTopColor: "#E5E7EB",
     backgroundColor: "#FFFFFF",
+    paddingVertical: 6,
   },
-  tabItem: { flex: 1, alignItems: "center" },
-  tabIcon: { fontSize: 18, color: TAB_ICON_COLOR, marginBottom: 2 },
-  tabLabel: { fontSize: 12, color: TAB_ICON_COLOR },
-  tabIconActive: { color: PRIMARY },
-  tabLabelActive: { color: PRIMARY, fontWeight: "600" },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 4,
+  },
+  tabIcon: {
+    fontSize: 18,
+    marginBottom: 2,
+    color: "#6B7280",
+  },
+  tabIconActive: {
+    color: PRIMARY,
+  },
+  tabLabel: {
+    fontSize: 11,
+    color: "#6B7280",
+  },
+  tabLabelActive: {
+    color: PRIMARY,
+    fontWeight: "600",
+  },
 });

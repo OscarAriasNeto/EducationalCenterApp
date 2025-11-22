@@ -16,7 +16,6 @@ const PRIMARY = "#6C3FF0";
 
 type Props = {
   navigation: {
-    navigate: (screen: string) => void;
     goBack: () => void;
   };
 };
@@ -34,18 +33,18 @@ const isValidGmail = (email: string) => {
   return regex.test(email);
 };
 
-const SignUpScreen: React.FC<Props> = ({ navigation }) => {
-  const { updateProfile } = useUser();
+const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
+  const { profile, updateProfile } = useUser();
 
-  const [nome, setNome] = useState("");
-  const [idade, setIdade] = useState("");
-  const [email, setEmail] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [objetivo, setObjetivo] = useState("");
+  const [nome, setNome] = useState(profile.nome);
+  const [idade, setIdade] = useState(profile.idade);
+  const [email, setEmail] = useState(profile.email);
+  const [cargo, setCargo] = useState(profile.cargo);
+  const [objetivo, setObjetivo] = useState(profile.objetivo);
 
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  const handleSignUp = () => {
+  const handleSave = () => {
     const newErrors: FieldErrors = {};
 
     if (!nome.trim()) {
@@ -68,7 +67,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     }
 
     if (!cargo.trim()) {
-      newErrors.cargo = "Informe seu cargo (ex: Jovem Aprendiz).";
+      newErrors.cargo = "Informe seu cargo.";
     }
 
     if (!objetivo.trim()) {
@@ -84,7 +83,6 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    // Salva perfil no contexto
     updateProfile({
       nome: nome.trim(),
       idade: idade.trim(),
@@ -93,26 +91,28 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
       objetivo: objetivo.trim(),
     });
 
-    Alert.alert("Conta criada!", "Bem-vindo(a) ao Educational Center 👋");
-    navigation.navigate("Home");
+    Alert.alert("Perfil atualizado", "Suas informações foram salvas com sucesso.");
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
-
       <ScrollView
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.backIcon}>‹</Text>
-        </TouchableOpacity>
+        {/* topo com setinha de voltar */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.backIcon}>‹</Text>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Editar perfil</Text>
+        </View>
 
-        <Text style={styles.screenTitle}>Criar conta</Text>
-        <Text style={styles.screenSubtitle}>
-          Preencha seus dados para começar a usar o Educational Center.
+        <Text style={styles.subtitle}>
+          Atualize suas informações pessoais do Educational Center.
         </Text>
 
         <View style={styles.form}>
@@ -199,19 +199,11 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
           )}
 
           <TouchableOpacity
-            style={styles.primaryButton}
+            style={styles.saveButton}
             activeOpacity={0.8}
-            onPress={handleSignUp}
+            onPress={handleSave}
           >
-            <Text style={styles.primaryButtonText}>Criar conta</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={styles.secondaryButtonText}>Já tenho conta</Text>
+            <Text style={styles.saveButtonText}>Salvar alterações</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -219,7 +211,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export default SignUpScreen;
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -231,19 +223,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 16,
   },
-  backIcon: {
-    fontSize: 24,
-    marginBottom: 8,
-  },
-  screenTitle: {
-    fontSize: 24,
-    fontWeight: "700",
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 4,
   },
-  screenSubtitle: {
-    fontSize: 14,
+  backIcon: {
+    fontSize: 24,
+    marginRight: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  subtitle: {
+    fontSize: 13,
     color: "#6B7280",
-    marginBottom: 24,
+    marginBottom: 16,
   },
   form: {
     marginTop: 4,
@@ -274,26 +270,16 @@ const styles = StyleSheet.create({
     color: "#EF4444",
     marginBottom: 8,
   },
-  primaryButton: {
+  saveButton: {
     backgroundColor: PRIMARY,
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: "center",
-    marginTop: 12,
+    marginTop: 16,
   },
-  primaryButtonText: {
+  saveButtonText: {
     color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "600",
-  },
-  secondaryButton: {
-    paddingVertical: 12,
-    alignItems: "center",
-    marginTop: 4,
-  },
-  secondaryButtonText: {
-    color: PRIMARY,
-    fontSize: 14,
-    fontWeight: "500",
   },
 });
