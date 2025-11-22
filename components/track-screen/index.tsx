@@ -9,37 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const PRIMARY = "#6C3FF0";
+import { trails } from "../trails-data";
+import { useProgress } from "../progress-context";
 
-const tracks = [
-  {
-    id: "communication",
-    title: "Comunicação Profissional",
-    description:
-      "Comunicação eficaz, postura e competências essenciais no ambiente de trabalho.",
-    done: 0,
-    total: 5,
-    progress: 0 / 5,
-  },
-  {
-    id: "corporate",
-    title: "Introdução ao Mundo Corporativo",
-    description:
-      "Entenda como funcionam as empresas, áreas, rotinas e cultura organizacional.",
-    done: 0,
-    total: 4,
-    progress: 0 / 4,
-  },
-  {
-    id: "labor-law",
-    title: "Noções de Direito Trabalhista",
-    description:
-      "Direitos e deveres do jovem aprendiz, contratos e conceitos legais.",
-    done: 0,
-    total: 6,
-    progress: 0 / 6,
-  },
-];
+const PRIMARY = "#6C3FF0";
 
 type Props = {
   navigation: {
@@ -49,6 +22,8 @@ type Props = {
 };
 
 const TracksScreen: React.FC<Props> = ({ navigation }) => {
+  const { progress } = useProgress();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
@@ -70,30 +45,49 @@ const TracksScreen: React.FC<Props> = ({ navigation }) => {
           contentContainerStyle={{ paddingBottom: 24 }}
           showsVerticalScrollIndicator={false}
         >
-          {tracks.map((track) => (
-            <TouchableOpacity
-              key={track.id}
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("Trail", { trailId: track.id })}
-            >
-              <Text style={styles.cardTitle}>{track.title}</Text>
-              <Text style={styles.cardDescription}>{track.description}</Text>
+          {trails.map((trail) => {
+            const trailProgress = progress[trail.id]?.completedLessons ?? {};
 
-              <View style={styles.progressBackground}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    { width: `${track.progress * 100}%` },
-                  ]}
-                />
-              </View>
+            const totalModules = trail.modules.length;
+            let completedModules = 0;
 
-              <Text style={styles.modulesText}>
-                {track.done} de {track.total}
-              </Text>
-            </TouchableOpacity>
-          ))}
+            trail.modules.forEach((module) => {
+              const allLessonsDone = module.lessons.every(
+                (lesson) => !!trailProgress[lesson.id]
+              );
+              if (allLessonsDone) completedModules++;
+            });
+
+            const ratio =
+              totalModules > 0 ? completedModules / totalModules : 0;
+
+            return (
+              <TouchableOpacity
+                key={trail.id}
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() =>
+                  navigation.navigate("Trail", { trailId: trail.id })
+                }
+              >
+                <Text style={styles.cardTitle}>{trail.title}</Text>
+                <Text style={styles.cardDescription}>{trail.description}</Text>
+
+                <View style={styles.progressBackground}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${ratio * 100}%` },
+                    ]}
+                  />
+                </View>
+
+                <Text style={styles.modulesText}>
+                  {completedModules} de {totalModules} módulos concluídos
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
       </View>
     </SafeAreaView>

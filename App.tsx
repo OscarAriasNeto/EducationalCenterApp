@@ -9,6 +9,7 @@ import TracksScreen from "./components/track-screen";
 import ProfileScreen from "./components/profile-screen";
 import GroupScreen from "./components/group-screen";
 import TrailScreen from "./components/trail-screen";
+import { ProgressProvider } from "./components/progress-context";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -24,19 +25,21 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Tracks" component={TracksScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Group" component={GroupScreen} />
-        <Stack.Screen name="Trail" component={TrailScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ProgressProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Tracks" component={TracksScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Group" component={GroupScreen} />
+          <Stack.Screen name="Trail" component={TrailScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ProgressProvider>
   );
 }
